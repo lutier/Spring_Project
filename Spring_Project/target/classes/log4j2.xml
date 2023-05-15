@@ -1,8 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
+ <Configuration>
+ 	<!-- Appender, Layout 설정 -->
+ 	<Appenders>
+ 		<Console name="console" target="SYSTEM_OUT">
+ 			<PatternLayout Pattern="%-5level %c(%M:%L) - %m%n"/>
+ 		</Console>
+ 	</Appenders>
+ 	<!--  Logger 설정 -->
+ 	<Loggers>
+ 		<Root level="INFO">
+ 			<AppenderRef ref="console" />
+ 		</Root>
+ 		<Logger name="com.joongang" level="INFO" additivity="false">
+ 			<AppenderRef ref="console" />
+ 		</Logger>
+ 		<Logger name="org.springframework" level="DEBUG" additivity="false">
+ 			<AppenderRef ref="console" />
+ 		</Logger>
+ 	</Loggers>
+ 	
+ </Configuration>
+ 
+ <!-- <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-	<!-- Appenders -->
+	Appenders
 	<appender name="console" class="org.apache.log4j.ConsoleAppender">
 		<param name="Target" value="System.out" />
 		<layout class="org.apache.log4j.PatternLayout">
@@ -10,12 +33,12 @@
 		</layout>
 	</appender>
 	
-	<!-- Application Loggers -->
-	<logger name="com.spring.controller">
+	Application Loggers
+	<logger name="com.joongang.controller">
 		<level value="info" />
 	</logger>
 	
-	<!-- 3rdparty Loggers -->
+	3rdparty Loggers
 	<logger name="org.springframework.core">
 		<level value="info" />
 	</logger>
@@ -32,10 +55,12 @@
 		<level value="info" />
 	</logger>
 
-	<!-- Root Logger -->
+	Root Logger
 	<root>
 		<priority value="warn" />
 		<appender-ref ref="console" />
 	</root>
 	
 </log4j:configuration>
+ -->
+ 
