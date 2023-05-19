@@ -9,6 +9,10 @@
 	values (#{user_id},#{user_name},#{user_pw},#{location},#{gender})
 	</insert>
 	
+	<select id="selectMemberByUserid" resultType="com.spring.domain.MemberVO">
+		select * from tbl_member where user_id = #{user_id}
+	</select>
+	
 	<delete id="deleteMember">
 		delete from tbl_member where user_id = ${user_id}
 	</delete>

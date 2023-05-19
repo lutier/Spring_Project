@@ -17,7 +17,7 @@ import lombok.extern.log4j.Log4j2;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {com.spring.config.RootConfig.class, com.spring.config.ServletConfig.class})
+@ContextConfiguration(classes = {com.spring.config.RootConfig.class, com.spring.config.ServletConfig.class, com.spring.config.SecurityConfig.class})
 @Log4j2
 public class MemberControllerTests {
 
@@ -31,11 +31,23 @@ public class MemberControllerTests {
 		mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 	}
 	
-	@Test
+//	@Test
 	public void testSurvey2ndRegisterSurvey() throws Exception {
 		log.info(mockMvc.perform(MockMvcRequestBuilders.get("/member/signup"))
 				.andReturn()
 				.getModelAndView()
 				.getModelMap());
+	}
+	
+	@Test
+	public void tsetSignUp() throws Exception{
+		String resultPage = mockMvc.perform(MockMvcRequestBuilders.post("/member/signup")
+				.param("user_id", "abcd@gmail.com").param("user_name","모지리3")
+				.param("user_pw","1212").param("location", "대구")
+				.param("gender", "남성"))
+				.andReturn()
+				.getModelAndView()
+				.getViewName();
+		log.info(resultPage);
 	}
 }
