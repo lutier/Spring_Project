@@ -5,6 +5,8 @@
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
     <%@ include file="./includes/header.jsp" %>
+
+<br>
     
 <script>
 $(function() {
@@ -25,5 +27,8 @@ $(function() {
 </h1>
 
 <P>  The time on the server is ${serverTime}. </P>
+
+
+<br>
 
 <%@include file="./includes/footer.jsp" %>

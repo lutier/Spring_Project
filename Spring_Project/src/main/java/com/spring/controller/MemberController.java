@@ -53,7 +53,7 @@ public class MemberController {
 			String userURI = (String) session.getAttribute("userURI");
 			if (userURI != null) {
 				session.removeAttribute("userURI");
-				return "redirect:/"+userURI;
+				return "redirect:"+userURI;
 			}
 			return "redirect:/";
 		} catch (Exception e){
