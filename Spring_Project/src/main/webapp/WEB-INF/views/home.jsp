@@ -28,7 +28,20 @@ $(function() {
 
 <P>  The time on the server is ${serverTime}. </P>
 
-
 <br>
+
+<div class="wrapper_main">
+	<div class="itemWrap">
+		<c:forEach items="${list }" var="item">
+			<div class="item">
+				<div class="imgBox">
+					<img src="${item.src }"/>
+				</div>
+					<p>이름 : ${item.title }</p>
+					<p>인기 : ${item.rank }</p>
+			</div>
+		</c:forEach>
+	</div>
+</div>
 
 <%@include file="./includes/footer.jsp" %>

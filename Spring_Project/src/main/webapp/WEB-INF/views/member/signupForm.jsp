@@ -1,11 +1,11 @@
 
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
     <%@ include file="../includes/header.jsp" %>
 
+<script src="/resources/js/test.js" defer></script>
 <script type="text/javascript">
 $(function(){
 	$("#phone1").on("input", function(e){
@@ -35,12 +35,21 @@ $(function(){
 		}
 	});
 	
-	$("#send").on("click", function(e){
+/* 	$("#send").on("click", function(e){
 		getToken();
 	});
 
 	$("#finished").on("click", function(e){
 		getTimerIntervalConfirm();
+	}); */
+	
+	const timer = new Timer();
+	$("#send").on("click",function(e){
+		timer.getToken($("#token"), $("#send"), $("#finished"), $("#timer"));
+	});
+	
+	$("#finished").on("click", function(e){
+		timer.getTimerIntervalConfirm($("#finished"), $("#signup__button"));
 	});
 });
 
@@ -118,7 +127,7 @@ function getToken(){
 	getTimerInterval();
 	
 }
-
+/* 
 let interval;
 
 function getTimerInterval(){
@@ -148,7 +157,7 @@ function getTimerIntervalConfirm(){
 	alert("인증되었습니다.");
 	$("#signup__button").attr("style","background-color: #FFFFFF; color: #2C3639; border: 1px solid #2C3639; cursor: pointer;");
 	$("#signup__button").attr("disabled",false);
-}
+} */
 </script>
 
 <div class="wrapper_signup">
