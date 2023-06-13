@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.spring.domain.BoardAttachVO;
 import com.spring.domain.BoardVO;
 import com.spring.domain.Criteria;
+import com.spring.mapper.BoardAttachMapper;
 import com.spring.mapper.BoardMapper;
 
 import lombok.Setter;
@@ -19,9 +22,22 @@ public class BoardService {
 	@Setter(onMethod_ = @Autowired)
 	private BoardMapper mapper;
 	
+	@Setter(onMethod_ = @Autowired)
+	private BoardAttachMapper attachMapper;
 	
+	@Transactional
 	public void register(BoardVO vo) {
 		mapper.insertBoard(vo);
+		
+		List<BoardAttachVO> list = vo.getAttachList();
+		if(list == null || list.isEmpty()) {
+			return;
+		}
+		
+		for(BoardAttachVO attach : list) {
+			attach.setBno(vo.getBno());
+			attachMapper.insert(attach);
+		}
 	}
 	
 	public List<BoardVO> getList(Criteria criteria) {

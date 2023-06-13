@@ -58,12 +58,72 @@ $(function() {
 		   function(result){
 	   			alert(result);
 	   			$(".modal").modal("hide");
-	   			getReplyList();
+	   			getReplyListWithPaging(pageNum);
    			},
    			function(error){
    				alert(error);
    			});
    });
+   
+   //reply list with paging
+   let pageNum = 1;
+   let replyPageFooter = $(".panel-footer");
+   
+ 	getReplyListWithPaging(pageNum);
+   function getReplyListWithPaging(pageNum){
+	   ReplyService.getListWithPaging(
+			{bno:'<c:out value="${board.bno}"/>', page: pageNum},
+			function(replyCnt, list){
+				console.log("list: " + list);
+				showReplyList(list);
+				showReplyPaging(replyCnt);
+			},
+			function (error){
+				alert(error);
+			});
+   }
+   
+   function showReplyPaging(replyCnt){
+	   let endNum = Math.ceil(pageNum / 10.0) * 10;
+	   let startNum = endNum - 9;
+	   let prev = startNum != 1;
+	   let next = false;
+	   let str = "";
+	   if (endNum * 10 >= replyCnt){
+		   endNum = Math.ceil(replyCnt/10.0);
+	   }
+	   if (endNum * 10 < replyCnt){
+		   next = true;
+	   }
+	   
+	   str +="<ul class='pagination'>";
+	   if (prev){
+		   str += "<li class='paginate_button'><a href='"+(startNum -1)+"'>Previous</a></li>";
+	   }
+	   for (let i = startNum; i<=endNum; i++){
+		   let active = pageNum == i? "active_list":"";
+		   str += "<li calss='paginate_button "+active+" '><a href='"+i+"'>"+i+"</a></li>";
+	   }
+	   if(next){
+		   str += "<li calss='paginate_button'><a href='"+(endNum +1)+"'>Next</a></li>";
+	   }
+	   str += "</ul></div>";
+	   console.log(str);
+	   replyPageFooter.html(str);
+    }
+   
+   //paging
+   replyPageFooter.on("click", "li a", function(e){
+	   e.preventDefault();
+	   console.log("page click");
+	   let targetPageNum = $(this).attr("href");
+	   console.log("targetPageNum: " + targetPageNum);
+	   pageNum = targetPageNum;
+	   getReplyListWithPaging(pageNum);
+   });
+   
+   
+   
    
    function showReplyList(list){
 		let str = "";
@@ -117,7 +177,7 @@ $(function() {
 	   ReplyService.update(reply, function(result){
 		   alert(result);
 		   $(".modal").modal("hide");
-		   getReplyList();
+		   getReplyListWithPaging(pageNum);
 	   }, function(error){
 		   alert(error);
 	   });
@@ -129,7 +189,7 @@ $(function() {
 	   ReplyService.remove(rno,
 			   function(result){
 		   			alert(result);
-		   			getReplyList();
+		   			getReplyListWithPaging(pageNum);
 	   },
 	   function(error){
 		   alert(error);

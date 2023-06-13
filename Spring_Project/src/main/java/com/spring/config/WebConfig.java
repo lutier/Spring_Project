@@ -1,6 +1,8 @@
 package com.spring.config;
 
 import javax.servlet.Filter;
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
@@ -34,6 +36,16 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 		characterEncodingFilter.setEncoding("UTF-8");
 		characterEncodingFilter.setForceEncoding(true);
 		return new Filter[] {characterEncodingFilter};
+	}
+	
+	@Override
+	protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+		registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
+		MultipartConfigElement multipartConfig = new MultipartConfigElement("/Users/tunamayo/Downloads/project_temp",
+				5*1024*1024,
+				40*1024*1024,
+				5*1024*1024);
+		registration.setMultipartConfig(multipartConfig);
 	}
 
 }

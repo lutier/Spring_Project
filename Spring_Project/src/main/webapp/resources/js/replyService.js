@@ -105,4 +105,19 @@ class ReplyService {
 			} 
 		});
 	}
+	
+	static getListWithPaging(param, callback, error){
+	let bno = param.bno;
+	let page = param.page;
+	$.getJSON("/replies/pages/"+bno + "/" + page, function(data){
+		if(callback){
+			console.log(data.replyCnt, data.list);
+			callback(data.replyCnt, data.list);
+			}
+		}).fail(function(xhr, status, err){
+			if(error) {
+				error(xhr.status + ' ' + status);
+			}
+		});
+	}
 }

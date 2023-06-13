@@ -18,6 +18,7 @@
 					<span>Spring Project</span>
 				</div>
 				<nav class="wrapper_menu">
+					<a href="/"><span class="menu-item">홈</span></a>
 					<a href="/board/list"><span class="menu-item">게시판</span></a>
 					<c:choose>
 						<c:when test="${not empty auth }">
