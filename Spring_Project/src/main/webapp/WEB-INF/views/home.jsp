@@ -7,7 +7,7 @@
     <%@ include file="./includes/header.jsp" %>
 
 <br>
-    
+<link rel="stylesheet" href="./resources/css/home.css" type="text/css">    
 <script>
 $(function() {
 	let msg = "${msg}";
@@ -22,26 +22,30 @@ $(function() {
 	alert(txt);
 });
 </script>
-<h1>
+
+<%-- <h1>
 	Hello world!  
 </h1>
 
 <P>  The time on the server is ${serverTime}. </P>
 
 <br>
-
+ --%>
 <div class="wrapper_main">
-	<div class="itemWrap">
+	<div class="slider" id="slider">
+	slider
+	</div>
+	<%-- <div class="itemWrap" id="itemWrap">
 		<c:forEach items="${list }" var="item">
-			<div class="item">
-				<div class="imgBox">
-					<img src="${item.src }"/>
+			<div class="item" id="item">
+				<div class="imgBox" id="imgBox">
+					<img src="${item.src }" id="item_img"/>
 				</div>
 					<p>이름 : ${item.title }</p>
 					<p>인기 : ${item.rank }</p>
 			</div>
 		</c:forEach>
-	</div>
+	</div> --%>
 </div>
 
 <%@include file="./includes/footer.jsp" %>
