@@ -29,6 +29,7 @@ $(function() {
 			   });
    }
    
+   
    function showReplyList(){
 	   
    }
@@ -195,17 +196,73 @@ $(function() {
 		   alert(error);
 	   });
 	   alert(rno + "번 댓글을 삭제 했습니다.");
-	   
-	   
    });
+   
+   let bno = '<c:out value="${board.bno}"/>';
+   $.getJSON("/board/getAttachList/"+bno, function(attachList){
+	   console.log(attachList);
+	   let str = "";
+	   $(attachList).each(function(i, attach){
+		   if(attach.filetype) {
+			   let fileCallPath = encodeURIComponent(attach.uploadpath+"/s_"+attach.uuid+"_"+attach.filename);
+			   str += "<li data-path='"+attach.uploadpath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.filename+"'";
+			   str += "	data-type='"+attach.filetype+"'>";
+			   str += "	<div>";
+			   str += "		<span> "+attach.filename+"</span><br>";
+			   str += "		<img src='/display?filename="+fileCallPath+"'/>";
+			   str += "	</div>";
+			   str += "</li>";
+		   } else {
+			   str += "<li data-path='"+attach.uploadpath+"' data-uuid='"+attach.uuid+"'";
+			   str += "	data-filename='"+attach.filename+"' data-type='"+attach.filetype+"'>";
+			   str += "	<div>";
+			   str += "		<span> "+ attach.filename+"</span><br>";
+			   str += "		<img src='/resources/img/attach.png' width='100px' height='100px'/>";
+			   str += "	</div>";
+			   str += "</li>";
+		   }
+	   });
+	   $(".uploadResult ul").html(str);
+   });
+   
+   function showImage(fileCallPath){
+	   $(".bigPictureWrapper").css("display","flex").show();
+	   $(".bigPicture").html("<img src='/display?filename="+fileCallPath+"'>").animate({width:'100%', top:'0'}, 600);
+   }
+   $(".uploadResult").on("click", "li", function(e){
+	   console.log("view Image");
+	   let liObj = $(this);
+	   let path = encodeURIComponent(liObj.data("path") + "/" + liObj.data("uuid") + "_" + liObj.data("filename"));
+	   console.log(path);
+	   if(liObj.data("type")){
+		   showImage(path);
+	   } else {
+		   if(path.toLowerCase().endsWith("pdf")){
+			   //new window
+			   window.open("/pdfviewer?filename="+path);
+		   } else {
+			   //download
+			   self.location = "/downloadFile?filename="+path;
+		   }
+	   }
+   });
+   $(".bigPictureWrapper").on("click", function(e){
+	   $(".bigpictureWrapper").hide();
+	   $(".bigPicture").css("top", "15%");
+   });
+   
    
 });
 
-
-
-
-
 </script>
+
+<<style>
+	.bigPictureWrapper{position: fixed/*absolute*/; display:none; left:0px; justify-content:center; align-items:center; top:0; 
+		width:100%; height:100%; backgrount-color:gray; z-index:1100; background:rgba(0,0,0,0,5);}
+	.bigPicture{position:relative; display:flex; justify-content:center; align-content:center; top:15%; left:0;}
+	.bigPicture img{width:650px;}
+</style>
+
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
@@ -235,10 +292,21 @@ $(function() {
 	<div class="read_table_content">
 		<textarea class="read_content" name="content" readonly="readonly">${board.content }</textarea>
 	</div>
+	<div class="article-bottom">
+		<div class="field3 get-th fielr-style">
+			<p><b>첨부파일</b></p>
+		</div>
+		<div class="field3 get-td">
+			<div class="uploadResult">
+				<ul></ul>
+			</div>
+		</div>
+	</div>
 	<div class="read_bottom">
 		<button class="read_button" id="list_btn">목록</button>
 		<c:if test="${auth.user_id eq board.writer }">
 			<button class="read_button" id="modify_btn">수정</button>
+			<button type="submit" data-oper='remove' class="read_button">삭제</button>
 		</c:if>
 		<form id='operForm' action="/board/modify" method="get">
 			<input type='hidden' id='bno' name='bno' value='<c:out value="${board.bno }"/>'>
@@ -286,6 +354,9 @@ $(function() {
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="bigPictureWrapper">
+		<div class="bigPicture"></div>
 	</div>
 	
 <%@include file="../includes/footer.jsp" %>

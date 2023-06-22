@@ -63,6 +63,20 @@ $(function(){
 		form.submit();
 	});
 	
+	let list = new Array();
+	<c:forEach items="${list}" var="board">
+		list.push(<c:out value="${board.bno}" />);
+	</c:forEach>
+	$.getJSON("/replies/cnt", {list: list}, function(data){
+		let keys=Object.keys(data);
+		$(keys).each (function(i, bno){
+			let replyCnt = data[bno];
+			let text = $("a[name="+bno+"]").text().trim() + "[" + replyCnt + "]";
+			$("a[name="+bno+"]").text(text);
+		})
+	});
+	
+	
 });
 
 </script>
@@ -80,6 +94,7 @@ $(function(){
 				<th>번호</th>
 				<th>제목</th>
 				<th>작성자</th>
+				<th>첨부파일</th>
 				<th>작성일</th>
 			</tr>
 		</thead>
@@ -88,18 +103,20 @@ $(function(){
 				<tr class="tr_list">
 					<td><c:out value="${board.bno }"/></td>
 					<td>
-						<a class="get" href='<c:out value="${board.bno }"/>'>
+						<a class="get" href='<c:out value="${board.bno }"/>' name='<c:out value="${board.bno }"/>'>
 							<c:out value="${board.title }"/>
 						</a>
 					</td>
 					<td><c:out value="${board.writer }"/></td>
+					<td id='<c:out value="${board.bno }"/>'></td>
 					<td>
 						<c:choose>
-							<c:when test="${board.regdate} == ${board.updatedate }">
-								<fmt:formatDate pattern="YY-MM-DD hh:mm" value="${board.regdate }"/>
+							<c:when test="${board.regdate == board.updatedate}">
+								<fmt:formatDate pattern="YY-MM-dd hh:mm" value="${board.regdate}"/>
 							</c:when>
 							<c:otherwise>
-								<fmt:formatDate pattern="YY-MM-DD hh:mm" value="${board.updatedate }"/>
+								<fmt:formatDate pattern="YY-MM-dd hh:mm" value="${board.updatedate}"/>
+								<c:out value="수정됨"/>
 							</c:otherwise>
 						</c:choose>
 					</td>
@@ -118,7 +135,7 @@ $(function(){
 			</c:if>
 			<c:forEach var="num" begin="${pageDTO.startPage }" end="${pageDTO.endPage }">
 				<li class="paginate_button ${pageDTO.criteria.pageNum==num ? 'active_list' :'' }">
-					<a href="${num }">${num }</a>
+					<a href="${num }">&nbsp;${num }&nbsp;</a>
 				</li>
 			</c:forEach>
 			<c:if test="${pageDTO.next }">

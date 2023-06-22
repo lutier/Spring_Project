@@ -3,6 +3,7 @@ package com.spring.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +41,25 @@ public class BoardService {
 		}
 	}
 	
+//	public boolean modify(BoardVO vo) {
+//	return mapper.update(vo) == 1;
+//}
+	
+	@Transactional
+	public boolean modify(BoardVO board) {
+		log.info("modify...." + board);
+		attachMapper.deleteAll(board.getBno());
+		boolean modifyResult = mapper.update(board) == 1;
+		List<BoardAttachVO> list = board.getAttachList();
+		if(modifyResult && list != null) {
+			for(BoardAttachVO vo : list) {
+				vo.setBno(board.getBno());
+				attachMapper.insert(vo);
+			}
+		}
+		return modifyResult;
+	}
+	
 	public List<BoardVO> getList(Criteria criteria) {
 		return mapper.getListWithPaging(criteria);
 	}
@@ -52,12 +72,15 @@ public class BoardService {
 		return mapper.read(bno);
 	}
 
-	public boolean modify(BoardVO vo) {
-		return mapper.update(vo) == 1;
-	}
+
 
 	public boolean remove(Long bno) {
 		return mapper.delete(bno)==1;
+	}
+
+	public List<BoardAttachVO> getAttachList(Long bno) {
+		log.info("get Attach list by bno " + bno);
+		return attachMapper.findByBno(bno);
 	}
 
 }

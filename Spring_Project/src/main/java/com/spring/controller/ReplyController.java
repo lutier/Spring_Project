@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.JsonObject;
 import com.spring.domain.Criteria;
 import com.spring.domain.ReplyPageDTO;
 import com.spring.domain.ReplyVO;
@@ -73,5 +75,14 @@ public class ReplyController {
 		log.info("list:"+dto.getList());
 		return new ResponseEntity<>(dto, HttpStatus.OK);
 		}
+	
+	@GetMapping(value="/cnt", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> getReplyCnt(@RequestParam(value="list[]") List<Long> list){
+		JsonObject jObj = new JsonObject();
+		for (Long bno : list) {
+			jObj.addProperty(String.valueOf(bno), service.getReplyCnt(bno));
+		}
+		return new ResponseEntity<>(jObj.toString(), HttpStatus.OK);
+	}
 	
 }

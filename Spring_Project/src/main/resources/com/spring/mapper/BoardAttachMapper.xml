@@ -8,4 +8,16 @@
 		insert into tbl_attach (uuid, uploadpath, filename, filetype, bno) 
 			values (#{uuid}, #{uploadpath}, #{filename}, #{filetype}, #{bno})
 	</insert>
+	
+	<select id="findByBno" resultType="com.spring.domain.BoardAttachVO">
+		select * from tbl_attach where bno = #{bno}
+	</select>
+	
+	<delete id="delete">
+		delete from tbl_attach where uuid = #{uuid}
+	</delete>
+	
+	<delete id="deleteAll">
+		delete from tbl_attach where bno = #{bno}
+	</delete>
 </mapper>
