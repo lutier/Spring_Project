@@ -17,10 +17,14 @@
 			} else if(operation === 'list'){
 				var pageNumTag = $("input[name='pageNum']").clone();
 				var amountTag = $("input[name='amount']").clone();
+				let typeTag = $("input[name='type']").clone();
+				let keywordTag = $("input[name='keyword']").clone();
 				formObj.empty();
 				formObj.attr("action","/board/list").attr("method","get");
 				formObj.append(pageNumTag);
 				formObj.append(amountTag);
+				formObj.append(typeTag);
+				formObj.append(keywordTag);
 			} else if (operation === 'modify'){
 				let str="";
 				$(".uploadResult ul li").each( function(i, listItem){
@@ -28,7 +32,7 @@
 					str += "<input type='hidden' name='attachList["+i+"].filename' value='"+liObj.data("filename")+"'>";
 					str += "<input type='hidden' name='attachList["+i+"].uuid' value='"+liObj.data("uuid")+"'>";
 					str += "<input type='hidden' name='attachList["+i+"].uploadpath' value='"+liObj.data("path")+"'>";
-					str += "<input type='hidden' name='attachList["+i+"].filetype' value='"+liObj.data("type")+"'>";
+					str += "<input type='hidden' name='attachList["+i+"].filetype' value='""'";
 				});
 				formObj.append(str).submit();
 			}
@@ -196,6 +200,8 @@
 	<form action="/board/modify" method="post">
 		<input type='hidden' name='pageNum' value='<c:out value="${criteria.pageNum }"/>'>
 		<input type='hidden' name='amount' value='<c:out value="${criteria.amount }"/>'>
+		<input type="hidden" name="type" value="<c:out value="${criteria.type}"/>">
+		<input type="hidden" name="keyword" value="<c:out value="${criteria.keyword}"/>">
 		<table class="read_table">
 			<thead>
 				<tr class="read_table_title">
@@ -231,7 +237,7 @@
 				</div>
 		<c:if test="${auth.user_id eq board.writer }">
 			<button type="submit" data-oper='modify' class="read_button">수정</button>
-			<button type="submit" data-oper='remove' class="read_button">삭제</button>
+	<!-- 		<button type="submit" data-oper='remove' class="read_button">삭제</button> -->
 		</c:if>
 		<button type="submit" data-oper="list" class="read_button">List</button>
 	</form>

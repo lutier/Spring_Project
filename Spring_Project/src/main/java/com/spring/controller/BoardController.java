@@ -110,10 +110,10 @@ public class BoardController {
 		}
 		for(BoardAttachVO attachVO : attachList) {
 			try {
-				Path file = Paths.get(""+attachVO.getUploadpath()+"/"+attachVO.getUuid()+"_"+attachVO.getFilename());
+				Path file = Paths.get("/Users/tunamayo/Downloads/project_temp"+attachVO.getUploadpath()+"/"+attachVO.getUuid()+"_"+attachVO.getFilename());
 				Files.deleteIfExists(file);
 				if(Files.probeContentType(file).startsWith("image")) {
-					Path thumbNail = Paths.get(""+attachVO.getUploadpath()+"/s_"+attachVO.getUuid()+"_"+attachVO.getFilename());
+					Path thumbNail = Paths.get("/Users/tunamayo/Downloads/project_temp"+attachVO.getUploadpath()+"/s_"+attachVO.getUuid()+"_"+attachVO.getFilename());
 					Files.delete(thumbNail);
 				}
 			} catch(Exception e) {
